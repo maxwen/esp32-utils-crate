@@ -28,11 +28,11 @@ const TSC2007_ADOFF_IRQON: u8 = 2;
 const TSC2007_ADC_12BIT: u8 = 0;
 const TSC2007_ADC_8BIT: u8 = 1;
 
-pub(crate) const TS_MINX: u16 = 550;
-pub(crate) const TS_MINY: u16 = 350;
-pub(crate) const TS_MAXX: u16 = 3600;
-pub(crate) const TS_MAXY: u16 = 3700;
-pub(crate) const TS_MIN_PRESSURE: u16 = 100;
+pub const TS_MINX: u16 = 550;
+pub const TS_MINY: u16 = 350;
+pub const TS_MAXX: u16 = 3600;
+pub const TS_MAXY: u16 = 3700;
+pub const TS_MIN_PRESSURE: u16 = 100;
 
 impl<I2C: I2c> Tsc2007<I2C> {
     pub fn new(i2c: I2C) -> Self {
