@@ -4,3 +4,4 @@ pub mod dummy_pin;
 pub mod touch_mapper;
 pub mod fonts;
 pub mod sdcard;
+pub mod tsc2007;
