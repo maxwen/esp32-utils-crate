@@ -6,7 +6,7 @@ use embedded_graphics::Drawable;
 use embedded_graphics::geometry::{Dimensions, Point, Size};
 use embedded_graphics::image::{Image, ImageDrawable};
 use embedded_graphics::mono_font::{MonoFont, MonoTextStyle};
-use embedded_graphics::pixelcolor::Rgb565;
+use embedded_graphics::pixelcolor::{Rgb565, RgbColor};
 use embedded_graphics::prelude::Primitive;
 use embedded_graphics::primitives::{PrimitiveStyle, PrimitiveStyleBuilder, Rectangle, RoundedRectangle};
 use embedded_graphics::text::{Alignment, Baseline, Text, TextStyle, TextStyleBuilder};
@@ -286,6 +286,29 @@ pub struct Theme {
     pub text_color_primary: Rgb565,
     pub highlight_color: Rgb565,
     pub error_color: Rgb565,
+}
+
+impl Theme {
+    pub fn new_dark_theme() -> Self {
+        Theme {
+            button_background_color: Rgb565::new(9, 37, 20),
+            button_foreground_color: Rgb565::WHITE,
+            screen_background_color: Rgb565::BLACK,
+            text_color_primary: Rgb565::WHITE,
+            highlight_color: Rgb565::new(15, 30, 15),
+            error_color: Rgb565::RED,
+        }
+    }
+    pub fn new_light_theme() -> Self {
+        Theme {
+            button_background_color: Rgb565::new(9, 37, 20),
+            button_foreground_color: Rgb565::WHITE,
+            screen_background_color: Rgb565::WHITE,
+            text_color_primary: Rgb565::BLACK,
+            highlight_color: Rgb565::new(24, 49, 24),
+            error_color: Rgb565::RED,
+        }
+    }
 }
 
 pub struct Progress<'a, T> {
