@@ -7,3 +7,6 @@ pub mod sdcard;
 pub mod tsc2007;
 pub mod png;
 pub mod jpeg;
+pub mod ft6236_asynch;
+
+pub mod graphics;

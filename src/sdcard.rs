@@ -110,6 +110,14 @@ impl<D: embedded_sdmmc::BlockDevice> SdcardManager<D> {
         Ok(())
     }
 
+    pub fn load_open_file_into_buffer(&mut self, file: RawFile, buffer: &mut [u8]) -> Result<usize, Error<D::Error>> {
+        self.volume_manager.read(file, buffer)
+    }
+
+    pub fn close_open_file(&mut self, file: RawFile) -> Result<(), Error<D::Error>>  {
+        self.volume_manager.close_file(file)
+    }
+
     pub fn write_file_in_root_dir_from_buffer(&mut self, file: RawFile, buffer: &[u8]) -> Result<(), Error<D::Error>> {
         self.volume_manager.write(file, buffer)
     }
