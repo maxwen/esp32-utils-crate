@@ -43,6 +43,10 @@ impl<I2C: I2c> Tsc2007<I2C> {
         }
     }
 
+    pub async fn init_irq(&mut self) -> Result<(u16), I2C::Error> {
+        self.command(TSC2007_MEASURE_TEMP0, TSC2007_POWERDOWN_IRQON, TSC2007_ADC_12BIT).await
+    }
+
     async fn command(&mut self, function: u8, power: u8, resolution: u8) -> Result<u16, I2C::Error> {
         self.cmd[0] = (function & 0x0F) << 4;
         self.cmd[0] |= (power & 0x03) << 2;
