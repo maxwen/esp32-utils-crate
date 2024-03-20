@@ -168,7 +168,7 @@ impl<T: ListItem + Clone> List<T> {
 
             GraphicUtils::display_text_with_background(display, Point::new(self.pos.x, self.pos.y + ((list_items_index - self.window_start) * item_height as usize) as i32),
                                                        character_style, text_style, text.as_str(), background_style,
-                                                       if self.show_scrollbar() { self.size.width - self.get_scrollbar_width() } else { self.size.width - 10 })?;
+                                                       if self.show_scrollbar() { self.size.width - 10 - self.get_scrollbar_width() } else { self.size.width - 10 })?;
         }
         if self.show_scrollbar() {
             // scrollbar
