@@ -1,4 +1,6 @@
 extern crate alloc;
+
+use alloc::string::String;
 use alloc::vec::Vec;
 
 use embedded_graphics::draw_target::DrawTarget;
@@ -75,8 +77,9 @@ impl GraphicUtils {
 }
 
 pub trait ListItem {
-    fn get_text(&self) -> &str;
+    fn get_text(&self) -> String;
     fn get_height(&self) -> u16;
+    fn get_width(&self, display_width: u32) -> u32;
     fn get_font(&self) -> &MonoFont<'_>;
     fn get_text_style(&self) -> TextStyle;
 }
@@ -148,7 +151,7 @@ impl<T: ListItem + Clone> List<T> {
 
     fn get_visible_text(&self, item: &T) -> alloc::string::String {
         let visible_width = self.size.width - self.get_scrollbar_width();
-        GraphicUtils::get_text_with_ellipsis_from_string(visible_width, item.get_text(), item.get_font())
+        GraphicUtils::get_text_with_ellipsis_from_string(item.get_width(visible_width), &item.get_text(), item.get_font())
     }
 
     pub fn draw<D>(&self, display: &mut D) -> Result<(), D::Error>
@@ -238,6 +241,14 @@ impl<T: ListItem + Clone> List<T> {
 
     pub fn get_bounding_box(&self) -> Rectangle {
         Rectangle::new(self.pos, self.size)
+    }
+
+    pub fn update_list<D>(&mut self, display: &mut D, items: &Vec<T>) -> Result<(), D::Error>
+        where D: DrawTarget<Color=Rgb565> {
+        self.list_items.clear();
+        self.list_items.extend_from_slice(items);
+        self.visible_lines = if items.len() == 0 { 1 } else { (self.size.height as u16 / items.first().unwrap().get_height()) as usize };
+        self.draw(display)
     }
 }
 
@@ -368,8 +379,10 @@ impl<'a, T: ImageDrawable<Color=Rgb565>> Progress<'a, T> {
 
         let text_pos_x = self.pos.x + (self.size.width / 2) as i32;
         let text_pos_y = self.pos.y + image_pos_y + image_size.height as i32 + text_height as i32;
+
+        let visible_text = GraphicUtils::get_text_with_ellipsis_from_string(self.size.width, self.text.as_str(), self.character_style.font);
         let text = Text::with_text_style(
-            self.text.as_str(),
+            &visible_text,
             Point::new(text_pos_x, text_pos_y),
             self.character_style,
             self.get_text_style(),
